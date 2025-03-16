@@ -1,15 +1,16 @@
 name: Deploy to Render
 
 on:
-    push:
+  push:
     branches: [ main ]
 
 jobs:
-    deploy:
+  deploy:
     runs-on: ubuntu-latest
+    
     steps:
-        - name: Deploy to production
+      - name: Deploy to production
         uses: fjogeleit/http-request-action@v1
         with:
-            url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
-            method: 'POST'
+          url: ${{ secrets.RENDER_DEPLOY_HOOK_URL }}
+          method: 'POST'
