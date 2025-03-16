@@ -1,19 +1,23 @@
-export default async (modelName: "Question", collectionName: string) => {
+import mongoose from 'mongoose';
+
+const cleanDb = async () => {
   try {
-    // Add a type check before accessing
-    if (!models[modelName]) {
-      console.error(`Model ${modelName} not found`);
-      return;
+    // Get all collection names from the database
+    const collections = Object.keys(mongoose.connection.collections);
+    
+    // Loop through each collection and drop it
+    for (const collectionName of collections) {
+      const collection = mongoose.connection.collections[collectionName];
+      await collection.deleteMany({});
+      console.log(`${collectionName} collection dropped.`);
     }
     
-    let modelExists = await models[modelName].db.db.listCollections({
-      name: collectionName
-    }).toArray()
-
-    if (modelExists.length) {
-      await db.dropCollection(collectionName);
-    }
+    console.log('All collections dropped.');
+    process.exit(0);
   } catch (err) {
-    throw err;
+    console.error(err);
+    process.exit(1);
   }
-}
+};
+
+export default cleanDb;
